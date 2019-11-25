@@ -4,10 +4,46 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
+// Swagger
+var swaggerJsDoc = require('swagger-jsdoc');
+
+var swaggerUi = require('swagger-ui-express');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var eventsRouter = require('./routes/events');
 
 var app = express();
+
+// Swagger definitions
+var swaggerDefinition = {
+    info : {
+        title : "Smokito",
+        version : "1.0.0",
+        description : "API description"
+    },
+    host : "localhost:3000",
+    basePath : '/'
+};
+
+// Options for swagger docs
+var options = {
+    swaggerDefinition : swaggerDefinition,
+    apis : ['./docs/**/*.yaml']
+};
+
+var swaggerSpec = swaggerJsDoc(options);
+
+app.get('/swagger.json', function(req, res){
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+
+});
+
+// Serve UI swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,7 +56,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
+app.use('/events', eventsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

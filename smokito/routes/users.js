@@ -1,9 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.put('/:id', function(req, res, next) {
+
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({ id : 1, val : "YOU ARE ALONE"});
+});
+
+router.get('/', function(req, res, next){
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({ id : 1, val : "all users"});
 });
 
 module.exports = router;
