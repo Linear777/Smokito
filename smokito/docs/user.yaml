@@ -23,6 +23,23 @@ paths:
           description: An object with a user updated user profile detail
         401:
           description: Unauthorized users
+  /user/find/{area}:
+    get:
+      tags:
+        - User
+      summary: It receives all users in specific geofence area
+      produces:
+        - application/json
+      parameters:
+        - area : id
+          description : Area identifier index in GeoSpatial reference
+          required : true
+      responses:
+        200:
+          description: An object with a users array
+        401:
+          description: Unauthorized users
+
 definitions:        # Schema definition for the request body
   updateUser:
     type: object
